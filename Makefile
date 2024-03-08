@@ -3,14 +3,14 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cesar <cesar@student.42.fr>                +#+  +:+       +#+         #
+#    By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/15 12:34:28 by cesar             #+#    #+#              #
-#    Updated: 2024/03/08 10:11:29 by cesar            ###   ########.fr        #
+#    Updated: 2024/03/08 15:15:41 by cefuente         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME			=	philosophers
+NAME			=	philo
 
 SRCS_LIST		=	philosophers.c
 					
