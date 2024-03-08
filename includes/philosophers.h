@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:24:53 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/05 12:51:40 by cefuente         ###   ########.fr       */
+/*   Updated: 2024/03/07 15:32:55 by cesar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,5 +18,30 @@
 # include "unistd.h"
 # include "pthread.h"
 
+typedef struct s_ph
+{
+	int		id;
+	char	state;
+	int		first_fork;
+	int		second_fork;
+	int		TTD;
+	int		TTE;
+	int		TTS;
+} t_ph;
+
+typedef struct s_table
+{
+	t_ph			*ph;
+	pthread_t		*threads;
+	pthread_t		*famine_threads;
+	int				*forks;
+	pthread_mutex_t	*forks_mut;
+	size_t			num_ph;
+	size_t			i;
+	int				TTD;
+	int				TTE;
+	int				TTS;
+	int				max_meals;
+} t_table;
 
 #endif 
