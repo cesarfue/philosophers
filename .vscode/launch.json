@@ -5,7 +5,7 @@
       "name": "C/C++ Runner: Debug Session",
       "type": "cppdbg",
       "request": "launch",
-      "args": ["5", "20", "20", "600"],
+      "args": ["5", "100", "20", "20"],
       "stopAtEntry": false,
       "externalConsole": false,
       "cwd": "/home/cefuente/Cursus/philosophers",
