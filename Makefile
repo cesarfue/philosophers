@@ -3,16 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+         #
+#    By: cesar <cesar@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/15 12:34:28 by cesar             #+#    #+#              #
-#    Updated: 2024/03/08 15:15:41 by cefuente         ###   ########.fr        #
+#    Updated: 2024/03/09 17:06:50 by cesar            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME			=	philo
 
-SRCS_LIST		=	philosophers.c
+SRCS_LIST		=	philosophers.c \
+					quit.c \
 					
 SRCS_DIR		=	srcs/
 OBJS_DIR		=	objs/

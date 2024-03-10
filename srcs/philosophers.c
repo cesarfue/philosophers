@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:25:11 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/08 16:54:56 by cefuente         ###   ########.fr       */
+/*   Updated: 2024/03/09 17:45:20 by cesar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	sleeps(t_ph *ph)
 	ph->state = 'S';
 	printf("Philosopher %ld is sleeping\n", ph->id);
 	usleep(ph->TTS * 1000);
-	printf("Philosopher %ld has finished sleeping\n", ph->id);
 }
 
 void	eats(t_ph *ph, t_table *table)
@@ -28,7 +27,6 @@ void	eats(t_ph *ph, t_table *table)
 	pthread_mutex_unlock(&table->forks_mut[ph->first_fork]);
 	table->forks[ph->second_fork] = 0;
 	pthread_mutex_unlock(&table->forks_mut[ph->second_fork]);
-	printf("Philosopher %ld has finished eating\n", ph->id);
 }
 
 void	thinks(t_ph *ph)
@@ -40,11 +38,13 @@ void	thinks(t_ph *ph)
 
 void	raise_forks(t_ph *ph, t_table *table)
 {
-	pthread_mutex_lock(&table->forks_mut[ph->first_fork]);
+	while (ph->state != 'D' && pthread_mutex_lock(&table->forks_mut[ph->first_fork]) != 0)
+		usleep(1);
 	ph->state = 'H';
 	table->forks[ph->first_fork] = 1;
 	printf("Philosopher %ld has raised a fork\n", ph->id);
-	pthread_mutex_lock(&table->forks_mut[ph->second_fork]);
+	while (ph->state != 'D' && pthread_mutex_lock(&table->forks_mut[ph->second_fork]) != 0)
+		usleep(1);
 	table->forks[ph->second_fork] = 1;
 	printf("Philosopher %ld has raised a fork\n", ph->id);
 	ph->state = 'E';
@@ -55,10 +55,7 @@ void	wait_the_others(t_table *table)
 	while (1)
 	{
 		if (table->ready == 1)
-		{
-			printf("ready\n");
 			break;
-		}
 		usleep(1);
 	}
 }
@@ -69,15 +66,12 @@ void	*routine(void *table_struct)
 	
 	table = (t_table *)table_struct;
 	ph = &table->ph[table->i];
-	// if (ph->id == table->num_ph)
-	// {
-	// 	table->ready = 1;
-	// 	usleep(100);
-	// }
-	// else
-	// 	wait_the_others(table);
+	if (ph->id == table->num_ph)
+		table->ready = 1;
+	wait_the_others(table);
 	while (1)
 	{
+		usleep(10);
 		if (ph->state != 'T')
 			thinks(ph);
 		raise_forks(ph, table);
@@ -95,13 +89,13 @@ void	*famine(void *table_struct)
 
 	table = (t_table *)table_struct;
 	ph = &table->ph[table->i];
-	// wait_the_others(table);
+	wait_the_others(table);
 	usleep(ph->TTD * 1000);
 	if (ph->state != 'E')
 	{
+		printf("Philosopher %ld(%c) has died\n", ph->id, ph->state);
 		ph->state = 'D'; 
-		printf("Philosopher %ld has died\n", ph->id);
-		exit(0);
+		quit_app(table);
 	}
 	return (NULL);
 }
@@ -171,6 +165,7 @@ int	main(int argc, char **argv)
 	init_table((int)table.num_ph, &table);
 	while (table.i < table.num_ph)
 	{
+		usleep(10);
 		pthread_create(&table.threads[table.i], NULL, &routine, (void *)&table);
 		pthread_create(&table.famine_threads[table.i], NULL, &famine, (void *)&table);
 		table.i++;
