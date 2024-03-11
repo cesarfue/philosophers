@@ -6,7 +6,7 @@
 /*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:25:11 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/09 17:45:20 by cesar            ###   ########.fr       */
+/*   Updated: 2024/03/11 11:34:06 by cesar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	*routine(void *table_struct)
 	wait_the_others(table);
 	while (1)
 	{
-		usleep(10);
+		// usleep(10);
 		if (ph->state != 'T')
 			thinks(ph);
 		raise_forks(ph, table);
@@ -95,7 +95,8 @@ void	*famine(void *table_struct)
 	{
 		printf("Philosopher %ld(%c) has died\n", ph->id, ph->state);
 		ph->state = 'D'; 
-		quit_app(table);
+		// quit_app(table);
+		exit(0);
 	}
 	return (NULL);
 }

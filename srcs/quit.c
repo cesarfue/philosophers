@@ -6,7 +6,7 @@
 /*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 17:06:35 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/09 17:47:30 by cesar            ###   ########.fr       */
+/*   Updated: 2024/03/11 11:31:32 by cesar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,12 @@ void	freetab(void **tab, int size)
 
 void	quit_app(t_table *table)
 {
-	// while (table->i < table->num_ph)
-	// {
-	// 	pthread_join(table->threads[table->i], NULL);
-	// 	pthread_join(table->famine_threads[table->i], NULL);
-	// 	table->i++;
-	// }
+	while (table->i < table->num_ph)
+	{
+		pthread_join(table->threads[table->i], NULL);
+		pthread_join(table->famine_threads[table->i], NULL);
+		table->i++;
+	}
 	if (table->ph)
 		free(table->ph);
 	if (table->forks)
