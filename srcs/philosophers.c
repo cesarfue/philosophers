@@ -3,14 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:25:11 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/11 11:34:06 by cesar            ###   ########.fr       */
+/*   Updated: 2024/03/11 16:21:47 by cefuente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers.h"
+
+int	is_dead(t_ph *ph)
+{
+	if (ph->state == 'D')
+		return (quit_app(ph), 1);
+	return (0);
+
+}
 
 void	sleeps(t_ph *ph)
 {
@@ -19,14 +27,14 @@ void	sleeps(t_ph *ph)
 	usleep(ph->TTS * 1000);
 }
 
-void	eats(t_ph *ph, t_table *table)
+void	eats(t_ph *ph)
 {
 	printf("Philosopher %ld is eating\n", ph->id);
 	usleep(ph->TTE * 1000);
-	table->forks[ph->first_fork] = 0;
-	pthread_mutex_unlock(&table->forks_mut[ph->first_fork]);
-	table->forks[ph->second_fork] = 0;
-	pthread_mutex_unlock(&table->forks_mut[ph->second_fork]);
+	ph->table->forks[ph->first_fork] = 0;
+	pthread_mutex_unlock(&ph->table->forks_mut[ph->first_fork]);
+	ph->table->forks[ph->second_fork] = 0;
+	pthread_mutex_unlock(&ph->table->forks_mut[ph->second_fork]);
 }
 
 void	thinks(t_ph *ph)
@@ -35,125 +43,80 @@ void	thinks(t_ph *ph)
 	printf("Philosopher %ld is thinking\n", ph->id);
 }
 
-
-void	raise_forks(t_ph *ph, t_table *table)
+void	raise_forks(t_ph *ph)
 {
-	while (ph->state != 'D' && pthread_mutex_lock(&table->forks_mut[ph->first_fork]) != 0)
+	while (!is_dead(ph) && pthread_mutex_lock(&ph->table->forks_mut[ph->first_fork]) != 0)
 		usleep(1);
 	ph->state = 'H';
-	table->forks[ph->first_fork] = 1;
+	ph->table->forks[ph->first_fork] = 1;
 	printf("Philosopher %ld has raised a fork\n", ph->id);
-	while (ph->state != 'D' && pthread_mutex_lock(&table->forks_mut[ph->second_fork]) != 0)
+	while (!is_dead(ph) && pthread_mutex_lock(&ph->table->forks_mut[ph->second_fork]) != 0)
 		usleep(1);
-	table->forks[ph->second_fork] = 1;
+	ph->table->forks[ph->second_fork] = 1;
 	printf("Philosopher %ld has raised a fork\n", ph->id);
 	ph->state = 'E';
 }
 
-void	wait_the_others(t_table *table)
+void	*routine(void *ph_struct)
 {
-	while (1)
-	{
-		if (table->ready == 1)
-			break;
-		usleep(1);
-	}
-}
-void	*routine(void *table_struct)
-{
-	t_table *table;
 	t_ph	*ph;
 	
-	table = (t_table *)table_struct;
-	ph = &table->ph[table->i];
-	if (ph->id == table->num_ph)
-		table->ready = 1;
-	wait_the_others(table);
+	ph = (t_ph *)ph_struct;
+	ph->ready = 1;
+	// wait_the_others(ph);
 	while (1)
 	{
 		// usleep(10);
 		if (ph->state != 'T')
 			thinks(ph);
-		raise_forks(ph, table);
-		eats(ph, table);	
+		raise_forks(ph);
+		eats(ph);	
 		sleeps(ph);
 	}
 	return (NULL);
 }
 
-
-void	*famine(void *table_struct)
+void	*famine(void *ph_struct)
 {
-	t_table	*table;
 	t_ph	*ph;
 
-	table = (t_table *)table_struct;
-	ph = &table->ph[table->i];
-	wait_the_others(table);
+	ph = (t_ph *)ph_struct;
+	// wait_the_others(ph);
 	usleep(ph->TTD * 1000);
 	if (ph->state != 'E')
 	{
 		printf("Philosopher %ld(%c) has died\n", ph->id, ph->state);
 		ph->state = 'D'; 
-		// quit_app(table);
-		exit(0);
+		quit_app(ph);
 	}
 	return (NULL);
 }
 
-void	define_hand(t_ph *ph, int num_ph)
-{
-	if (ph->id % 2 == 0)
-	{
-		ph->first_fork = ((ph->id + 1) % num_ph);
-		ph->second_fork = ph->id % num_ph;
-	}
-	else
-	{
-		ph->first_fork = ph->id % num_ph;
-		ph->second_fork = ((ph->id + 1) % num_ph);
-	}
-}
-
-void	*init_table(int num_ph, t_table *table)
+void	*init_ph(int num_ph, t_ph **ph, t_table *table)
 {
 	int i;
 
 	i = 0;
-	table->ph = malloc(num_ph * sizeof(t_ph));
-	if (!(table->ph))
-		return (NULL);
-	table->forks = malloc(num_ph * sizeof(int));
-	if (!(table->forks))
-		return (NULL);
-	table->forks_mut = malloc(num_ph * sizeof(pthread_mutex_t));
-	if (!(table->forks_mut))
-		return (NULL);
-	table->threads = malloc(num_ph * sizeof(pthread_t));
-	if (!(table->threads))
-		return (NULL);
-	table->famine_threads = malloc(num_ph * sizeof(pthread_t));
-	if (!(table->famine_threads))
-		return (NULL);
 	while (i < num_ph)
 	{
-		table->ph[i].id = i + 1;
-		table->ph[i].TTD = table->TTD;
-		table->ph[i].TTE = table->TTE;
-		table->ph[i].TTS = table->TTS;
+		ph[i]->id = i + 1;
+		ph[i]->TTD = table->TTD;
+		ph[i]->TTE = table->TTE;
+		ph[i]->TTS = table->TTS;
 		table->forks[i] = 0;
-		define_hand(&table->ph[i], table->num_ph);
+		ph[i]->ready = 0;
+		ph[i]->table = table;
+		define_hand(ph[i], table->num_ph);
 		pthread_mutex_init(&table->forks_mut[i], NULL);
 		i++;
 	}
 	return (NULL);
 }
 
-
-
 int	main(int argc, char **argv)
 {
 	t_table			table;
+	t_ph			*ph;
 
 	if (argc < 2)
 		return (-1);
@@ -163,12 +126,14 @@ int	main(int argc, char **argv)
 	table.TTE = atoi(argv[3]);
 	table.TTS = atoi(argv[4]);
 	table.ready = 0;
-	init_table((int)table.num_ph, &table);
+	table.ph = (void **)&ph;
+	malloc_table((int)table.num_ph, &ph, &table);
+	init_ph((int)table.num_ph, &ph, &table);
 	while (table.i < table.num_ph)
 	{
-		usleep(10);
-		pthread_create(&table.threads[table.i], NULL, &routine, (void *)&table);
-		pthread_create(&table.famine_threads[table.i], NULL, &famine, (void *)&table);
+		pthread_create(&table.threads[table.i], NULL, &routine, (void *)&ph[table.i]);
+		pthread_create(&table.famine_threads[table.i], NULL, &famine, (void *)&ph[table.i]);
+		usleep(500);
 		table.i++;
 	}
 	table.i = 0;

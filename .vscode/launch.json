@@ -8,8 +8,8 @@
       "args": ["5", "100", "20", "20"],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "/home/cesar/Cursus/philosophers",
-      "program": "/home/cesar/Cursus/philosophers/philo",
+      "cwd": "/home/cefuente/Cursus/philosophers",
+      "program": "/home/cefuente/Cursus/philosophers/philo",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

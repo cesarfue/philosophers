@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 17:06:35 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/11 11:31:32 by cesar            ###   ########.fr       */
+/*   Updated: 2024/03/11 15:45:16 by cefuente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,25 +24,26 @@ void	freetab(void **tab, int size)
 	free(tab);
 }
 
-void	quit_app(t_table *table)
+void	quit_app(t_ph *ph)
 {
-	while (table->i < table->num_ph)
+	ph->table->i = 0;
+	while (ph->table->i < ph->table->num_ph)
 	{
-		pthread_join(table->threads[table->i], NULL);
-		pthread_join(table->famine_threads[table->i], NULL);
-		table->i++;
+		pthread_join(ph->table->threads[ph->table->i], NULL);
+		pthread_join(ph->table->famine_threads[ph->table->i], NULL);
+		ph->table->i++;
 	}
-	if (table->ph)
-		free(table->ph);
-	if (table->forks)
-		free(table->forks);
-	// if (table->forks_mut)
+	if (ph->table->forks)
+		free(ph->table->forks);
+	// if (ph->table->forks_mut)
 	// {
-	// 	freetab((void *)table->forks_mut, table->num_ph);
+	// 	freetab((void *)ph->table->forks_mut, ph->table->num_ph);
 	// }
-	if (table->threads)
-		free(table->threads);
-	if (table->famine_threads)
-		free(table->famine_threads);
+	if (ph->table->threads)
+		free(ph->table->threads);
+	if (ph->table->famine_threads)
+		free(ph->table->famine_threads);
+	if (ph)
+		free(ph);
 	exit(0);
 }

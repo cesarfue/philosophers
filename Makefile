@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cesar <cesar@student.42.fr>                +#+  +:+       +#+         #
+#    By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/15 12:34:28 by cesar             #+#    #+#              #
-#    Updated: 2024/03/09 17:06:50 by cesar            ###   ########.fr        #
+#    Updated: 2024/03/11 14:05:23 by cefuente         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,8 @@ NAME			=	philo
 
 SRCS_LIST		=	philosophers.c \
 					quit.c \
-					
+					utils.c \
+
 SRCS_DIR		=	srcs/
 OBJS_DIR		=	objs/
 INCLUDES_DIR	=	includes/
@@ -26,7 +27,7 @@ HEADER			=	$(INCLUDES_DIR)philosophers.h
 
 
 CC				=	cc
-FLAGS			=	-Wall -Wextra -Werror -g
+FLAGS			=	-Wall -Wextra -Werror -g -lpthread -pthread
 RM				=	rm -rf
 
 all			:	$(NAME)

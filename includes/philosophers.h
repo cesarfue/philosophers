@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:24:53 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/09 17:39:46 by cesar            ###   ########.fr       */
+/*   Updated: 2024/03/11 15:53:41 by cefuente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,9 @@
 # include "unistd.h"
 # include "pthread.h"
 
-typedef struct s_ph
-{
-	size_t		id;
-	char	state;
-	int		first_fork;
-	int		second_fork;
-	int		TTD;
-	int		TTE;
-	int		TTS;
-} t_ph;
-
 typedef struct s_table
 {
-	t_ph			*ph;
+	void			**ph;
 	pthread_t		*threads;
 	pthread_t		*famine_threads;
 	int				*forks;
@@ -45,7 +34,25 @@ typedef struct s_table
 	int				ready;
 } t_table;
 
-void	quit_app(t_table *table);
+typedef struct s_ph
+{
+	size_t		id;
+	int		ready;
+	char	state;
+	int		first_fork;
+	int		second_fork;
+	int		TTD;
+	int		TTE;
+	int		TTS;
+	t_table	*table;
+} t_ph;
+
+
+void	quit_app(t_ph *ph);
+int		check_ready(t_ph *ph);
+void	wait_the_others(t_ph *ph);
+void	define_hand(t_ph *ph, int num_ph);
+void	*malloc_table(int num_ph, t_ph **ph, t_table *table);
 
 
 #endif 
