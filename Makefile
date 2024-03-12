@@ -3,19 +3,22 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+         #
+#    By: cesar <cesar@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/15 12:34:28 by cesar             #+#    #+#              #
-#    Updated: 2024/03/11 14:05:23 by cefuente         ###   ########.fr        #
+#    Updated: 2024/03/12 10:24:38 by cesar            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME			=	philo
 
-SRCS_LIST		=	philosophers.c \
+SRCS_LIST		=	mem.c \
+					main.c \
 					quit.c \
 					utils.c \
-
+					famine.c \
+					routine.c \
+					
 SRCS_DIR		=	srcs/
 OBJS_DIR		=	objs/
 INCLUDES_DIR	=	includes/
@@ -23,8 +26,6 @@ INCLUDES_DIR	=	includes/
 SRCS			=	$(addprefix $(SRCS_DIR),$(SRCS_LIST))
 OBJS			=	$(patsubst %.c, $(OBJS_DIR)%.o, $(SRCS))
 HEADER			=	$(INCLUDES_DIR)philosophers.h
-
-
 
 CC				=	cc
 FLAGS			=	-Wall -Wextra -Werror -g -lpthread -pthread

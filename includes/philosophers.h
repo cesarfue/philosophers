@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:24:53 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/11 15:53:41 by cefuente         ###   ########.fr       */
+/*   Updated: 2024/03/12 10:25:44 by cesar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ typedef struct s_table
 
 typedef struct s_ph
 {
-	size_t		id;
+	size_t	id;
+	size_t	index;
 	int		ready;
 	char	state;
 	int		first_fork;
@@ -47,12 +48,19 @@ typedef struct s_ph
 	t_table	*table;
 } t_ph;
 
-
 void	quit_app(t_ph *ph);
 int		check_ready(t_ph *ph);
 void	wait_the_others(t_ph *ph);
 void	define_hand(t_ph *ph, int num_ph);
-void	*malloc_table(int num_ph, t_ph **ph, t_table *table);
-
+void	*malloc_table(int num_ph, t_table *table);
+int		malloc_ph(t_ph ***ph, size_t num_ph);
+void	*famine(void *ph_struct);
+int		is_dead(t_ph *ph);
+void	action(t_ph *ph, int end);
+void	sleeps(t_ph *ph);
+void	eats(t_ph *ph);
+void	thinks(t_ph *ph);
+void	raise_forks(t_ph *ph);
+void	*routine(void *ph_struct);
 
 #endif 

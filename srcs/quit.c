@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 17:06:35 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/11 15:45:16 by cefuente         ###   ########.fr       */
+/*   Updated: 2024/03/12 09:34:02 by cesar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,14 @@ void	freetab(void **tab, int size)
 
 void	quit_app(t_ph *ph)
 {
-	ph->table->i = 0;
-	while (ph->table->i < ph->table->num_ph)
+	int	i;
+
+	i = 0;
+	while (i < (int)ph->table->num_ph)
 	{
-		pthread_join(ph->table->threads[ph->table->i], NULL);
-		pthread_join(ph->table->famine_threads[ph->table->i], NULL);
-		ph->table->i++;
+		pthread_join(ph->table->threads[i], NULL);
+		pthread_join(ph->table->famine_threads[i], NULL);
+		i++;
 	}
 	if (ph->table->forks)
 		free(ph->table->forks);
