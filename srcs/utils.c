@@ -6,20 +6,20 @@
 /*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 14:05:10 by cefuente          #+#    #+#             */
-/*   Updated: 2024/03/12 09:54:34 by cesar            ###   ########.fr       */
+/*   Updated: 2024/03/13 08:50:29 by cesar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers.h"
 
-int	check_ready(t_ph *ph)
+int	check_ready(t_ph *ph, int in_and_out)
 {
 	size_t	i; 
 
 	i = 0;
 	while (i < ph->table->num_ph)
 	{
-		if (((t_ph *)(ph->table->ph[i]))->ready == 0)
+		if (((t_ph *)(ph->table->ph[i]))->ready != in_and_out)
 		{
 			return (0);
 		}
@@ -27,12 +27,14 @@ int	check_ready(t_ph *ph)
 	}
 	return (1);
 }
-void	wait_the_others(t_ph *ph)
+void	wait_the_others(t_ph *ph, int in_and_out)
 {
-	while (check_ready(ph) == 0)
+	ph->ready = 1;
+	while (check_ready(ph, in_and_out) == 0)
 	{
 		usleep(10);
 	}
+	usleep(100);
 }
 
 void	define_hand(t_ph *ph, int num_ph)

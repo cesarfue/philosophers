@@ -6,7 +6,7 @@
 /*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 07:50:06 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/12 10:25:22 by cesar            ###   ########.fr       */
+/*   Updated: 2024/03/13 09:15:53 by cesar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,27 +17,27 @@ void	*famine(void *ph_struct)
 	t_ph	*ph;
 
 	ph = (t_ph *)ph_struct;
-	wait_the_others(ph);
-	usleep(ph->TTD);
-	if (ph->state != 'E')
+	wait_the_others(ph, 1);
+	while (is_dead(ph) == 0)
 	{
-		printf("Philosopher %ld(%c) has died\n", ph->id, ph->state);
-		ph->state = 'D'; 
-		// exit(0);
+		// usleep(ph->TTD * 1000);
+		if (action(ph, ph->TTD, 1000) == -1)
+			return (NULL);
+		if (ph->state != 'E' && is_dead(ph) == 0)
+		{
+			printf("Philosopher %ld(%c) has died\n", ph->id, ph->state);
+			pthread_mutex_lock(&ph->table->famine_mut);		
+			ph->table->famine = 1;
+			pthread_mutex_unlock(&ph->table->famine_mut);
+			return (NULL);
+		}
 	}
 	return (NULL);
 }
 
 int	is_dead(t_ph *ph)
 {
-	int	i;
-
-	i = 0;
-	while (i < (int)ph->table->num_ph)
-	{
-		if (((t_ph **)ph->table->ph)[i]->state == 'D')
-			return (quit_app(ph), 1);
-		i++;
-	}
+	if (ph->table->famine == 1)
+		return (1);	
 	return (0);
 }

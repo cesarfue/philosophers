@@ -6,7 +6,7 @@
 /*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:25:11 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/12 10:23:07 by cesar            ###   ########.fr       */
+/*   Updated: 2024/03/13 13:19:54 by cesar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	*init_ph(int num_ph, t_ph **ph, t_table *table)
 		table->forks[i] = 0;
 		ph[i]->ready = 0;
 		ph[i]->table = table;
+		ph[i]->state = 'S';
 		define_hand(ph[i], table->num_ph);
 		pthread_mutex_init(&table->forks_mut[i], NULL);
 		i++;
@@ -36,11 +37,14 @@ void	*init_ph(int num_ph, t_ph **ph, t_table *table)
 
 int	init_table(char **argv, t_table *table, t_ph **ph)
 {
+	pthread_mutex_init(&table->famine_mut, NULL);
+	table->famine = 0;
 	table->TTD = atoi(argv[2]);
 	table->TTE = atoi(argv[3]);
 	table->TTS = atoi(argv[4]);
 	table->ready = 0;
 	table->ph = (void **)ph;
+	table->err = -1;
 	return (0);
 }
 
@@ -64,7 +68,7 @@ int	main(int argc, char **argv)
 	{
 		pthread_create(&table.threads[i], NULL, &routine, (void *)ph[i]);
 		pthread_create(&table.famine_threads[i], NULL, &famine, (void *)ph[i]);
-		// usleep(500);
+		usleep(100);
 		i++;
 	}
 	i = 0;
@@ -74,5 +78,6 @@ int	main(int argc, char **argv)
 		pthread_join(table.famine_threads[i], NULL);
 		i++;
 	}
+	quit_app(&table);
 	return (0);
 }
