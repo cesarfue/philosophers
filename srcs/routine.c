@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 07:49:17 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/13 14:29:50 by cesar            ###   ########.fr       */
+/*   Updated: 2024/03/13 17:30:28 by cefuente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@ int	action(t_ph *ph, int end, int factor)
 	int	time;
 
 	time = 0;
-	while ((time * factor) <= (end * factor))
+	while ((time) <= (end * factor))
 	{
 		if (is_dead(ph) == 1)
 			return (-1);
-		usleep(2);
-		time += 2;
+		usleep(50);
+		time += 50;
 	}
 	return (0);
 }
@@ -53,15 +53,20 @@ void	thinks(t_ph *ph)
 {
 	ph->state = 'T';
 	printf("Philosopher %ld is thinking\n", ph->id);
+	action(ph, 500, 1);
 }
 
 int	raise_forks(t_ph *ph)
 {
+	if (is_dead(ph) == 1)
+		return (-1) ;
 	pthread_mutex_lock(&ph->table->forks_mut[ph->first_fork]);
 	if (is_dead(ph) == 1)
 		return (-1) ;
 	ph->table->forks[ph->first_fork] = 1;
 	printf("Philosopher %ld has raised a fork\n", ph->id);
+	if (is_dead(ph) == 1)
+		return (-1) ;
 	pthread_mutex_lock(&ph->table->forks_mut[ph->second_fork]);
 	if (is_dead(ph) == 1)
 		return (-1);		
@@ -76,23 +81,27 @@ void	*routine(void *ph_struct)
 	t_ph	*ph;
 	
 	ph = (t_ph *)ph_struct;
-	wait_the_others(ph, 1);
+	wait_to_start(ph);
+	// printf("ph started\n");
 	while (1)
 	{           
 		if (ph->state != 'T')
 			thinks(ph);
 		if (raise_forks(ph) == -1)
 		{
+			wait_to_end(ph);
 			printf("%ld exited\n", ph->id);
 			return (NULL);
 		}
 		if (eats(ph) == -1)
 		{
+			wait_to_end(ph);
 			printf("%ld exited\n", ph->id);
 			return (NULL);
 		}
 		if (sleeps(ph) == -1)
 		{
+			wait_to_end(ph);
 			printf("%ld exited\n", ph->id);
 			return (NULL);
 		}

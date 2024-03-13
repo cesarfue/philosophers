@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:24:53 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/13 08:37:19 by cesar            ###   ########.fr       */
+/*   Updated: 2024/03/13 16:18:48 by cefuente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ typedef struct s_table
 	int				TTE;
 	int				TTS;
 	int				max_meals;
-	int				ready;
+	size_t				ready;
+	pthread_mutex_t	ready_mut;
 	int				err;
 } t_table;
 
@@ -52,8 +53,8 @@ typedef struct s_ph
 } t_ph;
 
 void	quit_app(t_table *table);
-int		check_ready(t_ph *ph, int in_and_out);
-void	wait_the_others(t_ph *ph, int in_and_out);
+void	wait_to_start(t_ph *ph);
+void	wait_to_end(t_ph *ph);
 void	define_hand(t_ph *ph, int num_ph);
 void	*malloc_table(int num_ph, t_table *table);
 int		malloc_ph(t_ph ***ph, size_t num_ph);

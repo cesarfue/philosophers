@@ -3,38 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 14:05:10 by cefuente          #+#    #+#             */
-/*   Updated: 2024/03/13 08:50:29 by cesar            ###   ########.fr       */
+/*   Updated: 2024/03/13 17:22:44 by cefuente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers.h"
 
-int	check_ready(t_ph *ph, int in_and_out)
+void	wait_to_start(t_ph *ph)
 {
-	size_t	i; 
-
-	i = 0;
-	while (i < ph->table->num_ph)
+	pthread_mutex_lock(&ph->table->ready_mut);
+	ph->table->ready++;
+	pthread_mutex_unlock(&ph->table->ready_mut);
+	while (1)
 	{
-		if (((t_ph *)(ph->table->ph[i]))->ready != in_and_out)
-		{
-			return (0);
-		}
-		i++;
-	}
-	return (1);
-}
-void	wait_the_others(t_ph *ph, int in_and_out)
-{
-	ph->ready = 1;
-	while (check_ready(ph, in_and_out) == 0)
-	{
+		if (ph->table->ready == ph->table->num_ph * 2)
+			break ;
 		usleep(10);
 	}
-	usleep(100);
+	// usleep(1000000);
+}
+
+void	wait_to_end(t_ph *ph)
+{
+	pthread_mutex_lock(&ph->table->ready_mut);
+	ph->table->ready--;
+	printf("%ld ready : %ld\n", ph->id, ph->table->ready);
+	pthread_mutex_unlock(&ph->table->ready_mut);
+	while (1)
+	{
+		if (ph->table->ready == ph->table->num_ph)
+			break ;
+		usleep(10);
+	}
+	// usleep(10000);
 }
 
 void	define_hand(t_ph *ph, int num_ph)

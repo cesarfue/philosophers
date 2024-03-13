@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   famine.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 07:50:06 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/13 14:29:32 by cesar            ###   ########.fr       */
+/*   Updated: 2024/03/13 17:22:15 by cefuente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ void	*famine(void *ph_struct)
 	t_ph	*ph;
 
 	ph = (t_ph *)ph_struct;
-	wait_the_others(ph, 1);
+	wait_to_start(ph);
+	// printf("famine started\n");
 	while (is_dead(ph) == 0)
 	{
 		if (action(ph, ph->TTD, 1000) == -1)

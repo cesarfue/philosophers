@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:25:11 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/13 13:19:54 by cesar            ###   ########.fr       */
+/*   Updated: 2024/03/13 15:52:40 by cefuente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,9 @@ void	*init_ph(int num_ph, t_ph **ph, t_table *table)
 int	init_table(char **argv, t_table *table, t_ph **ph)
 {
 	pthread_mutex_init(&table->famine_mut, NULL);
+	pthread_mutex_init(&table->ready_mut, NULL);
+	pthread_mutex_lock(&table->ready_mut);
+
 	table->famine = 0;
 	table->TTD = atoi(argv[2]);
 	table->TTE = atoi(argv[3]);
@@ -68,10 +71,13 @@ int	main(int argc, char **argv)
 	{
 		pthread_create(&table.threads[i], NULL, &routine, (void *)ph[i]);
 		pthread_create(&table.famine_threads[i], NULL, &famine, (void *)ph[i]);
-		usleep(100);
+		if (i == table.num_ph - 1)
+			pthread_mutex_unlock(&table.ready_mut);
+		usleep(500);
 		i++;
 	}
 	i = 0;
+	// usleep(5000);
 	while (i < table.num_ph)
 	{
 		pthread_join(table.threads[i], NULL);
