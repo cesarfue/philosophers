@@ -6,7 +6,7 @@
 /*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 07:49:17 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/13 09:18:46 by cesar            ###   ########.fr       */
+/*   Updated: 2024/03/13 14:29:50 by cesar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ int	action(t_ph *ph, int end, int factor)
 	{
 		if (is_dead(ph) == 1)
 			return (-1);
-		usleep(5);
-		time += 5;
+		usleep(2);
+		time += 2;
 	}
 	return (0);
 }
@@ -57,18 +57,14 @@ void	thinks(t_ph *ph)
 
 int	raise_forks(t_ph *ph)
 {
-	while ((pthread_mutex_lock(&ph->table->forks_mut[ph->first_fork]) != 0) && is_dead(ph) == 0)
-	{
-		if (is_dead(ph) == 1)
-			return (-1);
-	}
+	pthread_mutex_lock(&ph->table->forks_mut[ph->first_fork]);
+	if (is_dead(ph) == 1)
+		return (-1) ;
 	ph->table->forks[ph->first_fork] = 1;
 	printf("Philosopher %ld has raised a fork\n", ph->id);
-	while ((pthread_mutex_lock(&ph->table->forks_mut[ph->second_fork]) != 0) && is_dead(ph) == 0)
-	{
-		if (is_dead(ph) == 1)
-			return (-1);		
-	}
+	pthread_mutex_lock(&ph->table->forks_mut[ph->second_fork]);
+	if (is_dead(ph) == 1)
+		return (-1);		
 	ph->table->forks[ph->second_fork] = 1;
 	printf("Philosopher %ld has raised a fork\n", ph->id);
 	ph->state = 'E';

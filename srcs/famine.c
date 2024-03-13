@@ -6,7 +6,7 @@
 /*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 07:50:06 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/13 09:15:53 by cesar            ###   ########.fr       */
+/*   Updated: 2024/03/13 14:29:32 by cesar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,12 @@ void	*famine(void *ph_struct)
 	wait_the_others(ph, 1);
 	while (is_dead(ph) == 0)
 	{
-		// usleep(ph->TTD * 1000);
 		if (action(ph, ph->TTD, 1000) == -1)
 			return (NULL);
-		if (ph->state != 'E' && is_dead(ph) == 0)
+		if (ph->state != 'E')
 		{
 			printf("Philosopher %ld(%c) has died\n", ph->id, ph->state);
-			pthread_mutex_lock(&ph->table->famine_mut);		
+			pthread_mutex_lock(&ph->table->famine_mut);	
 			ph->table->famine = 1;
 			pthread_mutex_unlock(&ph->table->famine_mut);
 			return (NULL);

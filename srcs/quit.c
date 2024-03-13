@@ -6,7 +6,7 @@
 /*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 17:06:35 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/13 09:30:06 by cesar            ###   ########.fr       */
+/*   Updated: 2024/03/13 14:33:51 by cesar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,6 @@ void	quit_app(t_table *table)
 	pthread_mutex_destroy(&table->famine_mut);
 	if (table->ph)
 		freetab(table->ph, table->num_ph);
-	if (table)
-		free(table);
+	// if (table)
+	// 	free(table);
 }
