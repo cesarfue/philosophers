@@ -6,7 +6,7 @@
 /*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 07:50:06 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/14 09:45:31 by cesar            ###   ########.fr       */
+/*   Updated: 2024/03/14 13:21:47 by cesar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	*famine(void *ph_struct)
 {
 	t_ph	*ph;
+	struct timeval time;
 
 	ph = (t_ph *)ph_struct;
 	wait_to_start(ph);
@@ -27,7 +28,9 @@ void	*famine(void *ph_struct)
 		pthread_mutex_unlock(&ph->time_since_last_meal_mut);
 		usleep(50);
 	}
-	printf("Philosopher %ld has died\n", ph->id);
+	ph->state = DEAD;
+	if (print_state(ph) == -1)
+		return (-1);
 	pthread_mutex_lock(&ph->table->famine_mut);	
 	ph->table->famine = 1;
 	pthread_mutex_unlock(&ph->table->famine_mut);

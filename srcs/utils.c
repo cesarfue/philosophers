@@ -6,7 +6,7 @@
 /*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 14:05:10 by cefuente          #+#    #+#             */
-/*   Updated: 2024/03/14 09:54:05 by cesar            ###   ########.fr       */
+/*   Updated: 2024/03/14 13:21:54 by cesar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ void	wait_to_start(t_ph *ph)
 	while (1)
 	{
 		if (ph->table->ready == ph->table->num_ph * 2)
+		{
+			gettimeofday(&ph->table->start_time, NULL);
 			break ;
+		}
 		usleep(10);
 	}
 }
@@ -36,7 +39,6 @@ void	wait_to_end(t_ph *ph)
 			break ;
 		usleep(10);
 	}
-	// usleep(10000);
 }
 
 void	define_hand(t_ph *ph, int num_ph)

@@ -6,7 +6,7 @@
 /*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:25:11 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/14 00:40:43 by cesar            ###   ########.fr       */
+/*   Updated: 2024/03/14 12:25:38 by cesar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ int	init_table(char **argv, t_table *table, t_ph **ph)
 	table->TTS = atoi(argv[4]);
 	table->ready = 0;
 	table->ph = (void **)ph;
-	table->err = -1;
 	return (0);
 }
 

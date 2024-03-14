@@ -6,7 +6,7 @@
 /*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:24:53 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/14 09:45:28 by cesar            ###   ########.fr       */
+/*   Updated: 2024/03/14 13:24:47 by cesar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,16 @@
 # include "stdlib.h"
 # include "unistd.h"
 # include "pthread.h"
+# include "sys/time.h"
+
+typedef enum
+{
+	THINKS,
+	EATS,
+	SLEEPS,
+	RAISES_FORK,
+	DEAD,
+} t_state;
 
 typedef struct s_table
 {
@@ -29,13 +39,15 @@ typedef struct s_table
 	pthread_mutex_t	famine_mut;
 	size_t			num_ph;
 	size_t			i;
-	float				TTD;
+	float			TTD;
 	int				TTE;
 	int				TTS;
 	int				max_meals;
-	size_t				ready;
+	size_t			ready;
 	pthread_mutex_t	ready_mut;
-	int				err;
+	struct timeval	start_time;
+	struct timeval	current_time;
+	long			elapsed_time;
 } t_table;
 
 typedef struct s_ph
@@ -43,7 +55,7 @@ typedef struct s_ph
 	size_t	id;
 	size_t	index;
 	int		ready;
-	char	state;
+	t_state	state;
 	float		time_since_last_meal;
 	pthread_mutex_t 	time_since_last_meal_mut;
 	int		first_fork;

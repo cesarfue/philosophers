@@ -6,12 +6,37 @@
 /*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 07:49:17 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/14 00:29:39 by cesar            ###   ########.fr       */
+/*   Updated: 2024/03/14 13:25:38 by cesar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers.h"
 
+int	print_state(t_ph *ph)
+{
+	gettimeofday(&ph->table->current_time, NULL);
+	ph->table->elapsed_time = (ph->table->current_time.tv_sec - ph->table->start_time.tv_sec) * 
+	if (ph->state == THINKS)
+	{
+
+	}
+	else if (ph->state == EATS)
+	{
+
+	}
+	else if (ph->state == SLEEPS)
+	{
+
+	}
+	else if (ph->state == RAISES_FORK)
+	{
+
+	}
+	else if (ph->state == DEAD)
+	{
+
+	}
+}
 
 int	action(t_ph *ph, int end, int factor)
 {
@@ -30,8 +55,9 @@ int	action(t_ph *ph, int end, int factor)
 
 int	sleeps(t_ph *ph)
 {
-	ph->state = 'S';
-	printf("Philosopher %ld is sleeping\n", ph->id);
+	ph->state = SLEEPS;
+	if (print_state(ph) == -1)
+		return (-1);
 	if (action(ph, ph->TTS, 1000) == -1)
 		return (-1);
 	return (0);
@@ -39,7 +65,9 @@ int	sleeps(t_ph *ph)
 
 int	eats(t_ph *ph)
 {
-	printf("Philosopher %ld is eating\n", ph->id);
+	ph->state = EATS;
+	if (print_state(ph) == -1)
+		return (-1);
 	pthread_mutex_lock(&ph->time_since_last_meal_mut);
 	ph->time_since_last_meal = 0;
 	pthread_mutex_unlock(&ph->time_since_last_meal_mut);
@@ -57,8 +85,9 @@ int	eats(t_ph *ph)
 
 int	thinks(t_ph *ph)
 {
-	ph->state = 'T';
-	printf("Philosopher %ld is thinking\n", ph->id);
+	ph->state = THINKS;
+	if (print_state(ph) == -1)
+		return (-1);
 	if (action(ph, 500, 1) == -1)
 		return (-1);
 	return (0);
@@ -70,12 +99,15 @@ int	raise_forks(t_ph *ph)
 	if (is_dead(ph) == 1)
 			return (-1);
 	ph->table->forks[ph->first_fork] = 1;
-	printf("Philosopher %ld has raised a fork\n", ph->id);
+	ph->state = RAISES_FORK;
+	if (print_state(ph) == -1)
+		return (-1);
 	pthread_mutex_lock(&ph->table->forks_mut[ph->second_fork]);
 	if (is_dead(ph) == 1)
 			return (-1);
 	ph->table->forks[ph->second_fork] = 1;
-	printf("Philosopher %ld has raised a fork\n", ph->id);
+	if (print_state(ph) == -1)
+		return (-1);
 	ph->state = 'E';
 	return (0);
 }
