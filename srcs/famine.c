@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   famine.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 07:50:06 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/14 13:21:47 by cesar            ###   ########.fr       */
+/*   Updated: 2024/03/14 15:02:48 by cefuente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	*famine(void *ph_struct)
 {
 	t_ph	*ph;
-	struct timeval time;
 
 	ph = (t_ph *)ph_struct;
 	wait_to_start(ph);
@@ -30,7 +29,7 @@ void	*famine(void *ph_struct)
 	}
 	ph->state = DEAD;
 	if (print_state(ph) == -1)
-		return (-1);
+		return (NULL);
 	pthread_mutex_lock(&ph->table->famine_mut);	
 	ph->table->famine = 1;
 	pthread_mutex_unlock(&ph->table->famine_mut);

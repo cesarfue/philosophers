@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:24:53 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/14 13:24:47 by cesar            ###   ########.fr       */
+/*   Updated: 2024/03/14 16:12:07 by cefuente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,6 @@ typedef struct s_table
 	size_t			ready;
 	pthread_mutex_t	ready_mut;
 	struct timeval	start_time;
-	struct timeval	current_time;
-	long			elapsed_time;
 } t_table;
 
 typedef struct s_ph
@@ -74,11 +72,13 @@ void	*malloc_table(int num_ph, t_table *table);
 int		malloc_ph(t_ph ***ph, size_t num_ph);
 void	*famine(void *ph_struct);
 int		is_dead(t_ph *ph);
-int		action(t_ph *ph, int end, int factor);
+int		action(t_ph *ph, long end);
 int		sleeps(t_ph *ph);
 int		eats(t_ph *ph);
 int		thinks(t_ph *ph);
 int		raise_forks(t_ph *ph);
 void	*routine(void *ph_struct);
+int		print_state(t_ph *ph);
+
 
 #endif 
