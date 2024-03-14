@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   famine.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 07:50:06 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/14 15:02:48 by cefuente         ###   ########.fr       */
+/*   Updated: 2024/03/14 23:05:37 by cesar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,16 @@ void	*famine(void *ph_struct)
 
 	ph = (t_ph *)ph_struct;
 	wait_to_start(ph);
-	while (ph->time_since_last_meal <= ph->TTD * 1000)
+	while (1)
 	{
-		if (is_dead(ph))
+		if (action(ph, 10) == -1)
 			return (NULL);
 		pthread_mutex_lock(&ph->time_since_last_meal_mut);
-		ph->time_since_last_meal += 50;
+		ph->time_since_last_meal += 10;
 		pthread_mutex_unlock(&ph->time_since_last_meal_mut);
-		usleep(50);
-	}
+		if (ph->time_since_last_meal >= ph->TTD)
+			break ; 
+	} 
 	ph->state = DEAD;
 	if (print_state(ph) == -1)
 		return (NULL);
@@ -36,13 +37,31 @@ void	*famine(void *ph_struct)
 	return (NULL);
 }
 
-int	is_dead(t_ph *ph)
+int	check_death(t_ph *ph)
 {
 	if (ph->table->famine == 1)
 	{
 		pthread_mutex_unlock(&ph->table->forks_mut[ph->first_fork]);
 		pthread_mutex_unlock(&ph->table->forks_mut[ph->second_fork]);
 		return (1);	
+	}
+	return (0);
+}
+
+
+int	check_meals(t_ph *ph)
+{
+	if (!ph->table->max_meals)
+		return (0);
+	if (ph->meals >= ph->table->max_meals)
+	{
+		ph->state = DEAD;
+		if (print_state(ph) == -1)
+			return (-1);
+		pthread_mutex_lock(&ph->table->famine_mut);
+		ph->table->famine = 1;
+		pthread_mutex_unlock(&ph->table->famine_mut);
+		return (-1);
 	}
 	return (0);
 }
