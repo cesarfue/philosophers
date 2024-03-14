@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   famine.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 07:50:06 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/13 17:22:15 by cefuente         ###   ########.fr       */
+/*   Updated: 2024/03/14 09:45:31 by cesar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,26 +18,29 @@ void	*famine(void *ph_struct)
 
 	ph = (t_ph *)ph_struct;
 	wait_to_start(ph);
-	// printf("famine started\n");
-	while (is_dead(ph) == 0)
+	while (ph->time_since_last_meal <= ph->TTD * 1000)
 	{
-		if (action(ph, ph->TTD, 1000) == -1)
+		if (is_dead(ph))
 			return (NULL);
-		if (ph->state != 'E')
-		{
-			printf("Philosopher %ld(%c) has died\n", ph->id, ph->state);
-			pthread_mutex_lock(&ph->table->famine_mut);	
-			ph->table->famine = 1;
-			pthread_mutex_unlock(&ph->table->famine_mut);
-			return (NULL);
-		}
+		pthread_mutex_lock(&ph->time_since_last_meal_mut);
+		ph->time_since_last_meal += 50;
+		pthread_mutex_unlock(&ph->time_since_last_meal_mut);
+		usleep(50);
 	}
+	printf("Philosopher %ld has died\n", ph->id);
+	pthread_mutex_lock(&ph->table->famine_mut);	
+	ph->table->famine = 1;
+	pthread_mutex_unlock(&ph->table->famine_mut);
 	return (NULL);
 }
 
 int	is_dead(t_ph *ph)
 {
 	if (ph->table->famine == 1)
+	{
+		pthread_mutex_unlock(&ph->table->forks_mut[ph->first_fork]);
+		pthread_mutex_unlock(&ph->table->forks_mut[ph->second_fork]);
 		return (1);	
+	}
 	return (0);
 }

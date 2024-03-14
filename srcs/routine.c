@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 07:49:17 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/13 17:30:28 by cefuente         ###   ########.fr       */
+/*   Updated: 2024/03/14 00:29:39 by cesar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,14 @@ int	sleeps(t_ph *ph)
 int	eats(t_ph *ph)
 {
 	printf("Philosopher %ld is eating\n", ph->id);
+	pthread_mutex_lock(&ph->time_since_last_meal_mut);
+	ph->time_since_last_meal = 0;
+	pthread_mutex_unlock(&ph->time_since_last_meal_mut);
 	if (action(ph, ph->TTE, 1000) == -1)
 		return (-1);
+	pthread_mutex_lock(&ph->time_since_last_meal_mut);
+	ph->time_since_last_meal = 0;
+	pthread_mutex_unlock(&ph->time_since_last_meal_mut);
 	ph->table->forks[ph->first_fork] = 0;
 	pthread_mutex_unlock(&ph->table->forks_mut[ph->first_fork]);
 	ph->table->forks[ph->second_fork] = 0;
@@ -49,27 +55,25 @@ int	eats(t_ph *ph)
 	return (0);
 }
 
-void	thinks(t_ph *ph)
+int	thinks(t_ph *ph)
 {
 	ph->state = 'T';
 	printf("Philosopher %ld is thinking\n", ph->id);
-	action(ph, 500, 1);
+	if (action(ph, 500, 1) == -1)
+		return (-1);
+	return (0);
 }
 
 int	raise_forks(t_ph *ph)
 {
-	if (is_dead(ph) == 1)
-		return (-1) ;
 	pthread_mutex_lock(&ph->table->forks_mut[ph->first_fork]);
 	if (is_dead(ph) == 1)
-		return (-1) ;
+			return (-1);
 	ph->table->forks[ph->first_fork] = 1;
 	printf("Philosopher %ld has raised a fork\n", ph->id);
-	if (is_dead(ph) == 1)
-		return (-1) ;
 	pthread_mutex_lock(&ph->table->forks_mut[ph->second_fork]);
 	if (is_dead(ph) == 1)
-		return (-1);		
+			return (-1);
 	ph->table->forks[ph->second_fork] = 1;
 	printf("Philosopher %ld has raised a fork\n", ph->id);
 	ph->state = 'E';
@@ -82,29 +86,19 @@ void	*routine(void *ph_struct)
 	
 	ph = (t_ph *)ph_struct;
 	wait_to_start(ph);
-	// printf("ph started\n");
 	while (1)
 	{           
 		if (ph->state != 'T')
-			thinks(ph);
+		{
+			if (thinks(ph) == -1)
+				return (NULL);
+		}
 		if (raise_forks(ph) == -1)
-		{
-			wait_to_end(ph);
-			printf("%ld exited\n", ph->id);
 			return (NULL);
-		}
 		if (eats(ph) == -1)
-		{
-			wait_to_end(ph);
-			printf("%ld exited\n", ph->id);
 			return (NULL);
-		}
 		if (sleeps(ph) == -1)
-		{
-			wait_to_end(ph);
-			printf("%ld exited\n", ph->id);
 			return (NULL);
-		}
 	}
 	return (NULL);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:24:53 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/13 16:18:48 by cefuente         ###   ########.fr       */
+/*   Updated: 2024/03/14 09:45:28 by cesar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ typedef struct s_table
 	pthread_mutex_t	famine_mut;
 	size_t			num_ph;
 	size_t			i;
-	int				TTD;
+	float				TTD;
 	int				TTE;
 	int				TTS;
 	int				max_meals;
@@ -44,6 +44,8 @@ typedef struct s_ph
 	size_t	index;
 	int		ready;
 	char	state;
+	float		time_since_last_meal;
+	pthread_mutex_t 	time_since_last_meal_mut;
 	int		first_fork;
 	int		second_fork;
 	int		TTD;
@@ -63,7 +65,7 @@ int		is_dead(t_ph *ph);
 int		action(t_ph *ph, int end, int factor);
 int		sleeps(t_ph *ph);
 int		eats(t_ph *ph);
-void	thinks(t_ph *ph);
+int		thinks(t_ph *ph);
 int		raise_forks(t_ph *ph);
 void	*routine(void *ph_struct);
 

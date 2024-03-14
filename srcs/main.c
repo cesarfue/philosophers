@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:25:11 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/13 15:52:40 by cefuente         ###   ########.fr       */
+/*   Updated: 2024/03/14 00:40:43 by cesar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,10 @@ void	*init_ph(int num_ph, t_ph **ph, t_table *table)
 		ph[i]->ready = 0;
 		ph[i]->table = table;
 		ph[i]->state = 'S';
+		ph[i]->time_since_last_meal = 0;
 		define_hand(ph[i], table->num_ph);
 		pthread_mutex_init(&table->forks_mut[i], NULL);
+		pthread_mutex_init(&ph[i]->time_since_last_meal_mut, NULL);
 		i++;
 	}
 	return (NULL);
@@ -77,7 +79,6 @@ int	main(int argc, char **argv)
 		i++;
 	}
 	i = 0;
-	// usleep(5000);
 	while (i < table.num_ph)
 	{
 		pthread_join(table.threads[i], NULL);
