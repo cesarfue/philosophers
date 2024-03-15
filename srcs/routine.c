@@ -6,7 +6,7 @@
 /*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 07:49:17 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/14 22:42:59 by cesar            ###   ########.fr       */
+/*   Updated: 2024/03/15 08:47:39 by cesar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int print_state(t_ph *ph)
 	if (ph->state == THINKS)
 		printf("%ld %ld is thinking\n", elapsed_time, ph->id);
 	else if (ph->state == EATS)
-		printf("%ld %ld is eating his %d meal / %d\n", elapsed_time, ph->id, ph->meals, ph->table->max_meals);
+		printf("%ld %ld is eating\n", elapsed_time, ph->id);
 	else if (ph->state == SLEEPS)
 		printf("%ld %ld is sleeping\n", elapsed_time, ph->id);
 	else if (ph->state == RAISES_FORK)
@@ -47,17 +47,17 @@ int action(t_ph *ph, long end)
 			return (-1);
 		gettimeofday(&current, NULL);
 		elapsed_time = ((current.tv_sec - start.tv_sec) * 1000) + ((current.tv_usec - start.tv_usec) / 1000);
-		usleep(ph->table->num_ph * 10);
 		if (elapsed_time >= end)
 			return (0);
+		// usleep(ph->table->num_ph * 10);
+		usleep(2);
 	}
 }
 
 int sleeps(t_ph *ph)
 {
 	ph->state = SLEEPS;
-	if (print_state(ph) == -1)
-		return (-1);
+	print_state(ph);
 	if (action(ph, ph->TTS) == -1)
 		return (-1);
 	return (0);
@@ -67,8 +67,7 @@ int eats(t_ph *ph)
 {
 	ph->state = EATS;
 	ph->meals++;
-	if (print_state(ph) == -1)
-		return (-1);
+	print_state(ph);
 	if (action(ph, ph->TTE) == -1)
 		return (-1);
 	if (check_meals(ph) == -1)
@@ -86,9 +85,12 @@ int eats(t_ph *ph)
 int thinks(t_ph *ph)
 {
 	ph->state = THINKS;
-	if (print_state(ph) == -1)
+	if (check_death(ph) == 1)
 		return (-1);
-	usleep(2);
+	print_state(ph);
+	// usleep(2);
+	usleep(ph->table->num_ph * 10);
+
 	return (0);
 }
 
@@ -99,15 +101,13 @@ int raise_forks(t_ph *ph)
 		return (-1);
 	ph->table->forks[ph->first_fork] = 1;
 	ph->state = RAISES_FORK;
-	if (print_state(ph) == -1)
-		return (-1);
+	print_state(ph);
 	pthread_mutex_lock(&ph->table->forks_mut[ph->second_fork]);
 	if (check_death(ph) == 1)
 		return (-1);
 	ph->table->forks[ph->second_fork] = 1;
 	ph->state = RAISES_FORK;
-	if (print_state(ph) == -1)
-		return (-1);
+	print_state(ph);
 	return (0);
 }
 
@@ -119,11 +119,11 @@ void *routine(void *ph_struct)
 	wait_to_start(ph);
 	while (1)
 	{
-		if (ph->state != THINKS)
-		{
+		// if (ph->state != THINKS)
+		// {
 			if (thinks(ph) == -1)
 				return (NULL);
-		}
+		// }
 		if (raise_forks(ph) == -1)
 			return (NULL);
 		if (eats(ph) == -1)
