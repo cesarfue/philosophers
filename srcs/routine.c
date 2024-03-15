@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 07:49:17 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/15 08:47:39 by cesar            ###   ########.fr       */
+/*   Updated: 2024/03/15 14:52:16 by cefuente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ int action(t_ph *ph, long end)
 		elapsed_time = ((current.tv_sec - start.tv_sec) * 1000) + ((current.tv_usec - start.tv_usec) / 1000);
 		if (elapsed_time >= end)
 			return (0);
-		// usleep(ph->table->num_ph * 10);
-		usleep(2);
+		usleep(ph->table->num_ph * 10);
+		// usleep(2);
 	}
 }
 
@@ -117,6 +117,10 @@ void *routine(void *ph_struct)
 
 	ph = (t_ph *)ph_struct;
 	wait_to_start(ph);
+	pthread_mutex_lock(&ph->table->print_mut);
+	printf("%ld started\n", ph->id);
+	pthread_mutex_unlock(&ph->table->print_mut);
+
 	while (1)
 	{
 		// if (ph->state != THINKS)

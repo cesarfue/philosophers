@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:25:11 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/14 23:05:42 by cesar            ###   ########.fr       */
+/*   Updated: 2024/03/15 14:55:54 by cefuente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,17 +63,26 @@ void	unlock_mutexes(t_table *table, t_ph **ph)
 	while (i < table->num_ph)
 	{
 		if (ph[i]->id % 2 == 0)
+		{
 			pthread_mutex_unlock(&ph[i]->starter_mut);
+			// printf("%ld unlocked\n", ph[i]->id);
+		}
 		i++;
 		usleep(table->num_ph * 10);
+		// usleep(10);
 	}
+	// usleep(table->num_ph * 10);
 	i = 0;
 	while (i < table->num_ph)
 	{
 		if (ph[i]->id % 2 != 0)
+		{
 			pthread_mutex_unlock(&ph[i]->starter_mut);
+			// printf("%ld unlocked\n", ph[i]->id);
+		}
 		i++;
 		usleep(table->num_ph * 10);
+		// usleep(10);
 	}
 
 }

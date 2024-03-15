@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   famine.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 07:50:06 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/15 08:46:44 by cesar            ###   ########.fr       */
+/*   Updated: 2024/03/15 14:32:14 by cefuente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,12 @@ void	*famine(void *ph_struct)
 	wait_to_start(ph);
 	while (1)
 	{
-		if (action(ph, 2) == -1)
-			return (NULL);
+		action(ph, 10);
 		pthread_mutex_lock(&ph->time_since_last_meal_mut);
 		ph->time_since_last_meal += 10;
 		pthread_mutex_unlock(&ph->time_since_last_meal_mut);
-		// if (check_death(ph) == 1)
-		// 	return (NULL);
+		if (check_death(ph) == 1)
+			return (NULL);
 		if (ph->time_since_last_meal >= ph->TTD)
 			break ; 
 	} 
