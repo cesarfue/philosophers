@@ -6,7 +6,7 @@
 /*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 07:49:17 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/15 14:52:16 by cefuente         ###   ########.fr       */
+/*   Updated: 2024/03/15 15:56:40 by cefuente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int action(t_ph *ph, long end)
 		if (elapsed_time >= end)
 			return (0);
 		usleep(ph->table->num_ph * 10);
-		// usleep(2);
+		// usleep(10);
 	}
 }
 
@@ -89,22 +89,23 @@ int thinks(t_ph *ph)
 		return (-1);
 	print_state(ph);
 	// usleep(2);
-	usleep(ph->table->num_ph * 10);
+	// usleep(ph->table->num_ph * 10);
 
 	return (0);
 }
 
 int raise_forks(t_ph *ph)
 {
-	pthread_mutex_lock(&ph->table->forks_mut[ph->first_fork]);
 	if (check_death(ph) == 1)
 		return (-1);
+	printf("%ld is waiting for his first fork (%d)\n", ph->id, ph->first_fork);
+	pthread_mutex_lock(&ph->table->forks_mut[ph->first_fork]);
 	ph->table->forks[ph->first_fork] = 1;
 	ph->state = RAISES_FORK;
 	print_state(ph);
-	pthread_mutex_lock(&ph->table->forks_mut[ph->second_fork]);
 	if (check_death(ph) == 1)
 		return (-1);
+	pthread_mutex_lock(&ph->table->forks_mut[ph->second_fork]);
 	ph->table->forks[ph->second_fork] = 1;
 	ph->state = RAISES_FORK;
 	print_state(ph);
@@ -117,16 +118,15 @@ void *routine(void *ph_struct)
 
 	ph = (t_ph *)ph_struct;
 	wait_to_start(ph);
-	pthread_mutex_lock(&ph->table->print_mut);
-	printf("%ld started\n", ph->id);
-	pthread_mutex_unlock(&ph->table->print_mut);
-
+	// pthread_mutex_lock(&ph->table->print_mut);
+	// printf("%ld started\n", ph->id);
+	// pthread_mutex_unlock(&ph->table->print_mut);
 	while (1)
 	{
 		// if (ph->state != THINKS)
 		// {
-			if (thinks(ph) == -1)
-				return (NULL);
+		if (thinks(ph) == -1)
+			return (NULL);
 		// }
 		if (raise_forks(ph) == -1)
 			return (NULL);

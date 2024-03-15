@@ -6,7 +6,7 @@
 /*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:25:11 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/15 14:55:54 by cefuente         ###   ########.fr       */
+/*   Updated: 2024/03/15 15:38:13 by cefuente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,28 +62,20 @@ void	unlock_mutexes(t_table *table, t_ph **ph)
 	gettimeofday(&table->start_time, NULL);
 	while (i < table->num_ph)
 	{
-		if (ph[i]->id % 2 == 0)
-		{
-			pthread_mutex_unlock(&ph[i]->starter_mut);
-			// printf("%ld unlocked\n", ph[i]->id);
-		}
-		i++;
-		usleep(table->num_ph * 10);
-		// usleep(10);
+		pthread_mutex_unlock(&ph[i++]->starter_mut);
 	}
-	// usleep(table->num_ph * 10);
-	i = 0;
-	while (i < table->num_ph)
-	{
-		if (ph[i]->id % 2 != 0)
-		{
-			pthread_mutex_unlock(&ph[i]->starter_mut);
-			// printf("%ld unlocked\n", ph[i]->id);
-		}
-		i++;
-		usleep(table->num_ph * 10);
-		// usleep(10);
-	}
+	// // usleep(table->num_ph * 10);
+	// i = 0;
+	// while (i < table->num_ph)
+	// {
+	// 	if (ph[i]->id % 2 != 0)
+	// 	{
+	// 		pthread_mutex_unlock(&ph[i]->starter_mut);
+	// 		// printf("%ld unlocked\n", ph[i]->id);
+	// 	}
+	// 	i++;
+	// 	// usleep(10);
+	// }
 
 }
 
@@ -92,6 +84,7 @@ void	launch_threads(t_table *table, t_ph **ph)
 	size_t	i;
 
 	i = 0;
+	gettimeofday(&table->start_time, NULL);
 	while (i < table->num_ph)
 	{
 		pthread_create(&table->threads[i], NULL, &routine, (void *)ph[i]);
