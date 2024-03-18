@@ -6,7 +6,7 @@
 /*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 17:40:23 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/16 18:23:58 by cesar            ###   ########.fr       */
+/*   Updated: 2024/03/18 10:34:32 by cesar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int action(t_ph *ph, long end)
 		elapsed_time = ((current.tv_sec - start.tv_sec) * 1000) + ((current.tv_usec - start.tv_usec) / 1000);
 		if (elapsed_time >= end)
 			return (0);
-		usleep(10);
+		usleep(2);
 	}
 }
 

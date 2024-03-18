@@ -6,7 +6,7 @@
 /*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:25:11 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/16 18:14:37 by cesar            ###   ########.fr       */
+/*   Updated: 2024/03/18 10:33:03 by cesar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,7 @@ void	unlock_mutexes(t_table *table, t_ph **ph)
 
 	i = 0;
 	while (i < table->num_ph)
-	{
 		pthread_mutex_unlock(&ph[i++]->starter_mut);
-	}
 }
 
 void	launch_threads(t_table *table, t_ph **ph)

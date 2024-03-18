@@ -6,7 +6,7 @@
 /*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:24:53 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/16 17:46:00 by cesar            ###   ########.fr       */
+/*   Updated: 2024/03/18 10:13:30 by cesar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int		action(t_ph *ph, long end);
 int		sleeps(t_ph *ph);
 int		eats(t_ph *ph);
 int		thinks(t_ph *ph);
-int		raise_forks(t_ph *ph);
+int raise_forks(t_ph *ph, pthread_mutex_t first_fork_mut, pthread_mutex_t second_fork_mut);
 void	*routine(void *ph_struct);
 int		check_meals(t_ph *ph);
 void	*death(t_ph *ph);
