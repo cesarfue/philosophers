@@ -6,7 +6,7 @@
 /*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 07:50:06 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/18 14:35:38 by cefuente         ###   ########.fr       */
+/*   Updated: 2024/03/18 16:14:38 by cefuente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	*famine(void *ph_struct)
 	gettimeofday(&start, NULL);
 	while (1)
 	{
-		// usleep(2);
+		// usleep(1);
 		gettimeofday(&current, NULL);
         elapsed_time = ((current.tv_sec - start.tv_sec) * 1000) + ((current.tv_usec - start.tv_usec) / 1000);
         if (elapsed_time >= 1)
@@ -39,7 +39,6 @@ void	*famine(void *ph_struct)
 			return (death(ph, print_mut)); 
 		if (check_death(ph) == 1)
 			return (NULL);
-		// printf("%ld /%ld\n", ph->time_since_last_meal, ph->TTD);
 	} 
 }
 
@@ -50,10 +49,4 @@ void	*death(t_ph *ph, pthread_mutex_t print_mut)
 	ph->table->famine = 1;
 	pthread_mutex_unlock(&ph->table->famine_mut);
 	return (NULL);
-
 }
-
-// void	yousleep_fam(t_ph *ph, float end)
-// {
-
-// }

@@ -6,7 +6,7 @@
 /*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 17:40:23 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/18 13:05:29 by cefuente         ###   ########.fr       */
+/*   Updated: 2024/03/18 15:56:17 by cefuente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,12 @@ int	yousleep(t_ph *ph, float ms)
 	float elapsed_time;
 
 	gettimeofday(&start, NULL);
-	usleep((ms * 1000) * 0.8);
+	usleep((ms * 1000) * 0.90);
 	while (1)
 	{
 		if (check_death(ph) == 1)
 			return (-1);
-		usleep(10);
+		usleep(150);
 		gettimeofday(&current, NULL);
 		elapsed_time = ((current.tv_sec - start.tv_sec) * 1000) + ((current.tv_usec - start.tv_usec) / 1000);
 		if (elapsed_time >= ms)
