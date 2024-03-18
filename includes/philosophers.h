@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:24:53 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/18 10:13:30 by cesar            ###   ########.fr       */
+/*   Updated: 2024/03/18 13:05:45 by cefuente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef struct s_table
 	pthread_mutex_t	print_mut;
 	size_t			num_ph;
 	size_t			i;
-	float			TTD;
+	long			TTD;
 	int				TTE;
 	int				TTS;
 	int				max_meals;
@@ -59,7 +59,7 @@ typedef struct s_ph
 	pthread_mutex_t	starter_mut;
 	int		first_fork;
 	int		second_fork;
-	int		TTD;
+	long	TTD;
 	int		TTE;
 	int		TTS;
 	int		meals;
@@ -74,21 +74,19 @@ int		malloc_ph(t_ph ***ph, size_t num_ph);
 void	*famine(void *ph_struct);
 int		check_death(t_ph *ph);
 int		action(t_ph *ph, long end);
-int		sleeps(t_ph *ph);
-int		eats(t_ph *ph);
-int		thinks(t_ph *ph);
-int raise_forks(t_ph *ph, pthread_mutex_t first_fork_mut, pthread_mutex_t second_fork_mut);
+int	yousleep(t_ph *ph, float ms);
+
+int		sleeps(t_ph *ph, pthread_mutex_t print_mut);
+int		eats(t_ph *ph, pthread_mutex_t print_mut);
+int		thinks(t_ph *ph, pthread_mutex_t print_mut);
+int		raise_forks(t_ph *ph, pthread_mutex_t first_fork_mut, pthread_mutex_t second_fork_mut, pthread_mutex_t print_mut);
 void	*routine(void *ph_struct);
-int		check_meals(t_ph *ph);
-void	*death(t_ph *ph);
-void	print_death(t_ph *ph);
-int		print_think(t_ph *ph);
-int		print_eat(t_ph *ph);
-int		print_sleep(t_ph *ph);
-int		print_fork(t_ph *ph);
-
-
-
-
+int		check_meals(t_ph *ph, pthread_mutex_t print_mut);
+void	*death(t_ph *ph, pthread_mutex_t print_mut);
+void	print_death(t_ph *ph, pthread_mutex_t print_mut);
+int		print_think(t_ph *ph, pthread_mutex_t print_mut);
+int		print_eat(t_ph *ph, pthread_mutex_t print_mut);
+int		print_sleep(t_ph *ph, pthread_mutex_t print_mut);
+int		print_fork(t_ph *ph, pthread_mutex_t print_mut);
 
 #endif 

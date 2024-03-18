@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:25:11 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/18 10:33:03 by cesar            ###   ########.fr       */
+/*   Updated: 2024/03/18 13:09:46 by cefuente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ int	init_table(char **argv, t_table *table, t_ph **ph)
 	table->TTS = atoi(argv[4]);
 	if (argv[5])
 		table->max_meals = atoi(argv[5]);
+	else
+		table->max_meals = 0;
 	table->ready = 0;
 	table->ph = (void **)ph;
 	return (0);
@@ -57,9 +59,9 @@ void	unlock_mutexes(t_table *table, t_ph **ph)
 {
 	size_t	i;
 
-	i = 0;
-	while (i < table->num_ph)
-		pthread_mutex_unlock(&ph[i++]->starter_mut);
+	i = -1;
+	while (++i < table->num_ph)
+		pthread_mutex_unlock(&ph[i]->starter_mut);
 }
 
 void	launch_threads(t_table *table, t_ph **ph)
