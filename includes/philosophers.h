@@ -6,7 +6,7 @@
 /*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:24:53 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/14 23:06:26 by cesar            ###   ########.fr       */
+/*   Updated: 2024/03/16 17:46:00 by cesar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,15 @@ int		eats(t_ph *ph);
 int		thinks(t_ph *ph);
 int		raise_forks(t_ph *ph);
 void	*routine(void *ph_struct);
-int		print_state(t_ph *ph);
 int		check_meals(t_ph *ph);
+void	*death(t_ph *ph);
+void	print_death(t_ph *ph);
+int		print_think(t_ph *ph);
+int		print_eat(t_ph *ph);
+int		print_sleep(t_ph *ph);
+int		print_fork(t_ph *ph);
+
+
 
 
 

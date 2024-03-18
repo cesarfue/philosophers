@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:25:11 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/15 15:38:13 by cefuente         ###   ########.fr       */
+/*   Updated: 2024/03/16 18:14:37 by cesar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	*init_ph(int num_ph, t_ph **ph, t_table *table)
 		ph[i]->TTE = table->TTE;
 		ph[i]->TTS = table->TTS;
 		table->forks[i] = 0;
-		ph[i]->ready = 0;
 		ph[i]->table = table;
 		ph[i]->state = 'S';
 		ph[i]->time_since_last_meal = 0;
@@ -59,38 +58,20 @@ void	unlock_mutexes(t_table *table, t_ph **ph)
 	size_t	i;
 
 	i = 0;
-	gettimeofday(&table->start_time, NULL);
 	while (i < table->num_ph)
 	{
 		pthread_mutex_unlock(&ph[i++]->starter_mut);
 	}
-	// // usleep(table->num_ph * 10);
-	// i = 0;
-	// while (i < table->num_ph)
-	// {
-	// 	if (ph[i]->id % 2 != 0)
-	// 	{
-	// 		pthread_mutex_unlock(&ph[i]->starter_mut);
-	// 		// printf("%ld unlocked\n", ph[i]->id);
-	// 	}
-	// 	i++;
-	// 	// usleep(10);
-	// }
-
 }
 
 void	launch_threads(t_table *table, t_ph **ph)
 {
 	size_t	i;
 
-	i = 0;
-	gettimeofday(&table->start_time, NULL);
-	while (i < table->num_ph)
-	{
+	i = -1;
+	while (++i < table->num_ph)
 		pthread_create(&table->threads[i], NULL, &routine, (void *)ph[i]);
-		pthread_create(&table->famine_threads[i], NULL, &famine, (void *)ph[i]);
-		i++;
-	}
+	gettimeofday(&table->start_time, NULL);
 	unlock_mutexes(table, ph);
 	i = 0;
 	while (i < table->num_ph)

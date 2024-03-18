@@ -6,7 +6,7 @@
 #    By: cesar <cesar@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/15 12:34:28 by cesar             #+#    #+#              #
-#    Updated: 2024/03/12 10:24:38 by cesar            ###   ########.fr        #
+#    Updated: 2024/03/16 17:42:10 by cesar            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,8 @@ SRCS_LIST		=	mem.c \
 					utils.c \
 					famine.c \
 					routine.c \
+					print_states.c \
+					actions_and_checks.c \
 					
 SRCS_DIR		=	srcs/
 OBJS_DIR		=	objs/
