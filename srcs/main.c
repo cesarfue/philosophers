@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:25:11 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/19 16:13:09 by cesar            ###   ########.fr       */
+/*   Updated: 2024/03/19 17:14:43 by cefuente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,16 @@
 
 void	*init_ph(int num_ph, t_ph **ph, t_table *table)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < num_ph)
 	{
 		ph[i]->id = i + 1;
 		ph[i]->index = i;
-		ph[i]->TTD = table->TTD;
-		ph[i]->TTE = table->TTE;
-		ph[i]->TTS = table->TTS;
+		ph[i]->time_to_die = table->time_to_die;
+		ph[i]->time_to_eat = table->time_to_eat;
+		ph[i]->time_to_sleep = table->time_to_sleep;
 		table->forks[i] = 0;
 		ph[i]->table = table;
 		ph[i]->state = 'S';
@@ -70,11 +70,11 @@ int	get_args(char **argv, t_table *table)
 {
 	if (atosi(argv[1], (int *)&table->num_ph) == -1)
 		return (quit_app(table, 1), 1);
-	if (atosi(argv[2], &table->TTD) == -1)
+	if (atosi(argv[2], &table->time_to_die) == -1)
 		return (quit_app(table, 1), 1);
-	if (atosi(argv[3], &table->TTE) == -1)
+	if (atosi(argv[3], &table->time_to_eat) == -1)
 		return (quit_app(table, 1), 1);
-	if (atosi(argv[4], &table->TTS) == -1)
+	if (atosi(argv[4], &table->time_to_sleep) == -1)
 		return (quit_app(table, 1), 1);
 	if (argv[5])
 	{

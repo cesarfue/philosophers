@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mem.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 10:22:32 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/19 16:13:35 by cesar            ###   ########.fr       */
+/*   Updated: 2024/03/19 17:15:50 by cefuente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	malloc_ph(t_ph ***ph, size_t num_ph)
 	while (i < num_ph)
 	{
 		(*ph)[i] = malloc(sizeof(t_ph));
-		if(!((*ph)[i]))
+		if (!((*ph)[i]))
 			return (1);
 		i++;
 	}

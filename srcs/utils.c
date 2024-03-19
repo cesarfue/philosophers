@@ -6,7 +6,7 @@
 /*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 14:05:10 by cefuente          #+#    #+#             */
-/*   Updated: 2024/03/19 15:53:00 by cefuente         ###   ########.fr       */
+/*   Updated: 2024/03/19 17:15:17 by cefuente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ void	define_hand(t_ph *ph, int num_ph)
 {
 	if (ph->id % 2 != 0)
 	{
-		ph->first_fork = (ph->index + 1 ) % num_ph;
-		ph->second_fork = (ph->index % num_ph);
+		ph->first_fork = (ph->index + 1) % num_ph;
+		ph->second_fork = ph->index % num_ph;
 	}
 	else
 	{
-		ph->first_fork = (ph->index % num_ph);
+		ph->first_fork = ph->index % num_ph;
 		ph->second_fork = (ph->index + 1) % num_ph;
 	}
 }
@@ -60,4 +60,3 @@ int	atosi(const char *str, int *ret)
 		return (-1);
 	return (*ret = (int)nb);
 }
-

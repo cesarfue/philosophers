@@ -6,29 +6,11 @@
 /*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 17:40:23 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/18 15:56:17 by cefuente         ###   ########.fr       */
+/*   Updated: 2024/03/19 17:05:30 by cefuente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers.h"
-
-int action(t_ph *ph, long end)
-{
-	(void) ph;
-	struct timeval current;
-	struct timeval start;
-	long elapsed_time;
-
-	gettimeofday(&start, NULL);
-	while (1)
-	{
-		gettimeofday(&current, NULL);
-		elapsed_time = ((current.tv_sec - start.tv_sec) * 1000) + ((current.tv_usec - start.tv_usec) / 1000);
-		if (elapsed_time >= end)
-			return (0);
-		usleep(2);
-	}
-}
 
 int	check_death(t_ph *ph)
 {
@@ -36,7 +18,7 @@ int	check_death(t_ph *ph)
 	{
 		pthread_mutex_unlock(&ph->table->forks_mut[ph->first_fork]);
 		pthread_mutex_unlock(&ph->table->forks_mut[ph->second_fork]);
-		return (1);	
+		return (1);
 	}
 	return (0);
 }
@@ -58,9 +40,9 @@ int	check_meals(t_ph *ph, pthread_mutex_t print_mut)
 
 int	yousleep(t_ph *ph, float ms)
 {
-	struct timeval current;
-	struct timeval start;
-	float elapsed_time;
+	struct timeval	current;
+	struct timeval	start;
+	float			elapsed_time;
 
 	gettimeofday(&start, NULL);
 	usleep((ms * 1000) * 0.90);
@@ -70,7 +52,8 @@ int	yousleep(t_ph *ph, float ms)
 			return (-1);
 		usleep(150);
 		gettimeofday(&current, NULL);
-		elapsed_time = ((current.tv_sec - start.tv_sec) * 1000) + ((current.tv_usec - start.tv_usec) / 1000);
+		elapsed_time = ((current.tv_sec - start.tv_sec) * 1000)
+			+ ((current.tv_usec - start.tv_usec) / 1000);
 		if (elapsed_time >= ms)
 			return (0);
 	}

@@ -6,7 +6,7 @@
 /*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 17:06:35 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/19 15:53:30 by cefuente         ###   ########.fr       */
+/*   Updated: 2024/03/19 17:14:26 by cefuente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	quit_app(t_table *table, int err)
 	if (table->forks_mut)
 		freemut(table->forks_mut, table->num_ph);
 	if (table->threads)
-		free(table->threads); 
+		free(table->threads);
 	if (table->famine_threads)
 		free(table->famine_threads);
 	freetabmut(table->ph, table->num_ph);

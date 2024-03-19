@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:24:53 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/19 16:14:54 by cesar            ###   ########.fr       */
+/*   Updated: 2024/03/19 17:24:19 by cefuente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,21 @@
 # include "sys/time.h"
 # include "limits.h"
 
-typedef enum
+typedef enum states
 {
 	THINKS,
 	EATS,
 	SLEEPS,
 	RAISES_FORK,
 	DEAD,
-} t_state;
+}	t_state;
+
+typedef struct s_proxi
+{
+	pthread_mutex_t	*first_fork_mut;
+	pthread_mutex_t	*second_fork_mut;
+	pthread_mutex_t	print_mut;
+}	t_proxy;
 
 typedef struct s_table
 {
@@ -41,31 +48,31 @@ typedef struct s_table
 	pthread_mutex_t	print_mut;
 	size_t			num_ph;
 	size_t			i;
-	int			TTD;
-	int				TTE;
-	int				TTS;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
 	int				max_meals;
 	size_t			ready;
 	struct timeval	start_time;
-} t_table;
+}	t_table;
 
 typedef struct s_ph
 {
-	size_t	id;
-	size_t	index;
-	int		ready;
-	t_state	state;
-	long		time_since_last_meal;
+	size_t			id;
+	size_t			index;
+	int				ready;
+	t_state			state;
+	long			time_since_last_meal;
 	pthread_mutex_t	time_since_last_meal_mut;
 	pthread_mutex_t	starter_mut;
-	int		first_fork;
-	int		second_fork;
-	int	TTD;
-	int		TTE;
-	int		TTS;
-	int		meals;
-	t_table	*table;
-} t_ph;
+	int				first_fork;
+	int				second_fork;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				meals;
+	t_table			*table;
+}	t_ph;
 
 int		atosi(const char *str, int *ret);
 void	quit_app(t_table *table, int err);
@@ -80,7 +87,8 @@ int		yousleep(t_ph *ph, float ms);
 int		sleeps(t_ph *ph, pthread_mutex_t print_mut);
 int		eats(t_ph *ph, pthread_mutex_t print_mut);
 int		thinks(t_ph *ph, pthread_mutex_t print_mut);
-int		raise_forks(t_ph *ph, pthread_mutex_t *first_fork_mut, pthread_mutex_t *second_fork_mut, pthread_mutex_t print_mut);
+int		raise_forks(t_ph *ph, pthread_mutex_t *first_fork_mut,
+			pthread_mutex_t *second_fork_mut, pthread_mutex_t print_mut);
 void	*routine(void *ph_struct);
 int		check_meals(t_ph *ph, pthread_mutex_t print_mut);
 void	*death(t_ph *ph, pthread_mutex_t print_mut);
