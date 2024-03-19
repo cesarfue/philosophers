@@ -6,7 +6,7 @@
 /*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 07:49:17 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/18 16:14:59 by cefuente         ###   ########.fr       */
+/*   Updated: 2024/03/19 12:13:00 by cefuente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int eats(t_ph *ph, pthread_mutex_t print_mut)
 		return (-1);
 	if (yousleep(ph, ph->TTE) == -1)
 		return (-1);
-	// usleep(ph->TTE * 1000);
 	if (check_meals(ph, print_mut) == -1)
 		return (-1);
 	pthread_mutex_lock(&ph->time_since_last_meal_mut);
@@ -46,21 +45,12 @@ int thinks(t_ph *ph, pthread_mutex_t print_mut)
 {
 	if (print_think(ph, print_mut) == -1)
 		return (-1);
+	yousleep(ph, 1);
 	return (0);
 }
 
 int raise_forks(t_ph *ph, pthread_mutex_t *first_fork_mut, pthread_mutex_t *second_fork_mut, pthread_mutex_t print_mut)
 {
-	// // pthread_mutex_lock(&ph->table->forks_mut[ph->first_fork]);
-	// pthread_mutex_lock(first_fork_mut);
-	// ph->table->forks[ph->first_fork] = 1;
-	// if (print_fork(ph, print_mut) == -1)
-	// 	return (-1);
-	// // pthread_mutex_lock(&ph->table->forks_mut[ph->second_fork]);
-	// pthread_mutex_lock(second_fork_mut);
-	// ph->table->forks[ph->second_fork] = 1;
-	// if (print_fork(ph, print_mut) == -1)
-	// 	return (-1);
 	pthread_mutex_lock(first_fork_mut);
 	if (ph->table->forks[ph->first_fork] == 0)
 	{
@@ -107,7 +97,6 @@ void *routine(void *ph_struct)
 			return (NULL);
 		if (sleeps(ph, print_mut) == -1)
 			return (NULL);
-		// yousleep(ph, 1);
 	}
 	return (NULL);
 }

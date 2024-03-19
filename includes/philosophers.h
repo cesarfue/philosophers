@@ -6,7 +6,7 @@
 /*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:24:53 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/18 15:38:55 by cefuente         ###   ########.fr       */
+/*   Updated: 2024/03/19 12:16:12 by cefuente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include "unistd.h"
 # include "pthread.h"
 # include "sys/time.h"
+# include "limits.h"
 
 typedef enum
 {
@@ -40,7 +41,7 @@ typedef struct s_table
 	pthread_mutex_t	print_mut;
 	size_t			num_ph;
 	size_t			i;
-	long			TTD;
+	int			TTD;
 	int				TTE;
 	int				TTS;
 	int				max_meals;
@@ -59,14 +60,15 @@ typedef struct s_ph
 	pthread_mutex_t	starter_mut;
 	int		first_fork;
 	int		second_fork;
-	long	TTD;
+	int	TTD;
 	int		TTE;
 	int		TTS;
 	int		meals;
 	t_table	*table;
 } t_ph;
 
-void	quit_app(t_table *table);
+int		atosi(const char *str, int *ret);
+void	quit_app(t_table *table, int err);
 void	wait_to_start(t_ph *ph);
 void	define_hand(t_ph *ph, int num_ph);
 void	*malloc_table(int num_ph, t_table *table);

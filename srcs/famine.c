@@ -6,7 +6,7 @@
 /*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 07:50:06 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/18 16:14:38 by cefuente         ###   ########.fr       */
+/*   Updated: 2024/03/19 11:26:32 by cefuente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	*famine(void *ph_struct)
 	gettimeofday(&start, NULL);
 	while (1)
 	{
-		// usleep(1);
 		gettimeofday(&current, NULL);
         elapsed_time = ((current.tv_sec - start.tv_sec) * 1000) + ((current.tv_usec - start.tv_usec) / 1000);
         if (elapsed_time >= 1)
