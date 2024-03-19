@@ -6,7 +6,7 @@
 /*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 17:06:35 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/19 12:30:05 by cefuente         ###   ########.fr       */
+/*   Updated: 2024/03/19 14:58:49 by cefuente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,7 @@ void	freetabmut(void **tab, int size)
 
 	i = 0;
 	while (i < size)
-	{
 		pthread_mutex_destroy(&((t_ph **)tab)[i++]->time_since_last_meal_mut);
-	}
 }
 
 void	quit_app(t_table *table, int err)
@@ -59,8 +57,8 @@ void	quit_app(t_table *table, int err)
 	freetabmut(table->ph, table->num_ph);
 	if (table->ph)
 		freetab(table->ph, table->num_ph);
-	if (table)
-		free(table);
+	// if (table)
+	// 	free(table);
 	if (err != 0)
 		printf("Error\n");
 	return ;

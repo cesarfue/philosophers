@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cesar <cesar@student.42.fr>                +#+  +:+       +#+         #
+#    By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/15 12:34:28 by cesar             #+#    #+#              #
-#    Updated: 2024/03/16 17:42:10 by cesar            ###   ########.fr        #
+#    Updated: 2024/03/19 14:32:42 by cefuente         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ OBJS			=	$(patsubst %.c, $(OBJS_DIR)%.o, $(SRCS))
 HEADER			=	$(INCLUDES_DIR)philosophers.h
 
 CC				=	cc
-FLAGS			=	-Wall -Wextra -Werror -g -lpthread -pthread
+FLAGS			=	-Wall -Wextra -Werror -Wuninitialized -g -lpthread -pthread
 RM				=	rm -rf
 
 all			:	$(NAME)

@@ -8,8 +8,6 @@
       "args": ["6", "410", "200", "200"],
       "stopAtEntry": false,
       "externalConsole": false,
-    //   "cwd": "/home/cesar/Cursus/philosophers",
-    //   "program": "/home/cesar/Cursus/philosophers/philo",
 		"cwd": "${workspaceFolder}",
 		"program": "${workspaceFolder}/philo",
       "MIMode": "gdb",

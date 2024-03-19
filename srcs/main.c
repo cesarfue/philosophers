@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:25:11 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/19 14:10:19 by cesar            ###   ########.fr       */
+/*   Updated: 2024/03/19 15:00:49 by cefuente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,19 +91,11 @@ int	main(int argc, char **argv)
 {
 	t_table			table;
 	t_ph			**ph;
-	size_t			*pnum;
 
 	if (argc < 2)
 		return (-1);
 	ph = NULL;
-	pnum = &table.num_ph;
-	(void) pnum;
-	// table = NULL;
-	// table->forks = NULL;
-	// table = malloc(sizeof(t_table));
-	// if (!table)
-	// 	return (quit_app(&table, 1), 1);
-	if (atosi(argv[1], (int *)pnum) == -1)
+	if (atosi(argv[1], (int *)&table.num_ph) == -1)
 		return (quit_app(&table, 1), 1);
 	// table.num_ph = atoi(argv[1]);
 	malloc_ph(&ph, table.num_ph);
