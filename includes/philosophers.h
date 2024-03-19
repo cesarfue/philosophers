@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:24:53 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/19 12:16:12 by cefuente         ###   ########.fr       */
+/*   Updated: 2024/03/19 16:14:54 by cesar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int		atosi(const char *str, int *ret);
 void	quit_app(t_table *table, int err);
 void	wait_to_start(t_ph *ph);
 void	define_hand(t_ph *ph, int num_ph);
-void	*malloc_table(int num_ph, t_table *table);
+int		malloc_table(int num_ph, t_table *table);
 int		malloc_ph(t_ph ***ph, size_t num_ph);
 void	*famine(void *ph_struct);
 int		check_death(t_ph *ph);

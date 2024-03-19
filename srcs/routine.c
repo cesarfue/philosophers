@@ -6,7 +6,7 @@
 /*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 07:49:17 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/19 13:45:09 by cesar            ###   ########.fr       */
+/*   Updated: 2024/03/19 16:18:12 by cesar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int thinks(t_ph *ph, pthread_mutex_t print_mut)
 {
 	if (print_think(ph, print_mut) == -1)
 		return (-1);
-	yousleep(ph, 1);
+	// yousleep(ph, 1);
 	return (0);
 }
 

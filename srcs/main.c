@@ -6,7 +6,7 @@
 /*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:25:11 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/19 16:10:34 by cesar            ###   ########.fr       */
+/*   Updated: 2024/03/19 16:13:09 by cesar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,10 @@ int	main(int argc, char **argv)
 	ph = NULL;
 	if (get_args(argv, &table) != 0)
 		return (1);
-	malloc_ph(&ph, table.num_ph);
-	malloc_table((int)table.num_ph, &table);
+	if (malloc_ph(&ph, table.num_ph) != 0)
+		return (quit_app(&table, 1), 2);
+	if (malloc_table((int)table.num_ph, &table) != 0)
+		return (quit_app(&table, 1), 2);
 	init_table(&table, ph);
 	init_ph((int)table.num_ph, ph, &table);
 	launch_threads(&table, ph);
