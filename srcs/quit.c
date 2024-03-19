@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 17:06:35 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/19 14:58:49 by cefuente         ###   ########.fr       */
+/*   Updated: 2024/03/19 15:38:40 by cesar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,11 @@ void	freetabmut(void **tab, int size)
 
 void	quit_app(t_table *table, int err)
 {
+	if (err == 1)
+	{
+		printf("Error\n");
+		return ;
+	}
 	if (table->forks)
 		free(table->forks);
 	if (table->forks_mut)
@@ -53,12 +58,11 @@ void	quit_app(t_table *table, int err)
 		free(table->threads); 
 	if (table->famine_threads)
 		free(table->famine_threads);
-	pthread_mutex_destroy(&table->famine_mut);
 	freetabmut(table->ph, table->num_ph);
 	if (table->ph)
 		freetab(table->ph, table->num_ph);
-	// if (table)
-	// 	free(table);
+	pthread_mutex_destroy(&table->famine_mut);
+	pthread_mutex_destroy(&table->print_mut);
 	if (err != 0)
 		printf("Error\n");
 	return ;
