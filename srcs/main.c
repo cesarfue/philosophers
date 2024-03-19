@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:25:11 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/19 12:32:13 by cefuente         ###   ########.fr       */
+/*   Updated: 2024/03/19 14:10:19 by cesar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,24 +89,28 @@ void	launch_threads(t_table *table, t_ph **ph)
 
 int	main(int argc, char **argv)
 {
-	t_table			*table;
+	t_table			table;
 	t_ph			**ph;
+	size_t			*pnum;
 
 	if (argc < 2)
 		return (-1);
 	ph = NULL;
-	table = NULL;
+	pnum = &table.num_ph;
+	(void) pnum;
+	// table = NULL;
 	// table->forks = NULL;
-	table = malloc(sizeof(t_table));
-	if (!table)
-		return (quit_app(table, 1), 1);
-	if (atosi(argv[1], (int *)&table->num_ph) == -1)
-		return (quit_app(table, 1), 1);
-	malloc_ph(&ph, table->num_ph);
-	malloc_table(table->num_ph, table);
-	init_table(argv, table, ph);
-	init_ph((int)table->num_ph, ph, table);
-	launch_threads(table, ph);
-	quit_app(table, 0);
+	// table = malloc(sizeof(t_table));
+	// if (!table)
+	// 	return (quit_app(&table, 1), 1);
+	if (atosi(argv[1], (int *)pnum) == -1)
+		return (quit_app(&table, 1), 1);
+	// table.num_ph = atoi(argv[1]);
+	malloc_ph(&ph, table.num_ph);
+	malloc_table((int)table.num_ph, &table);
+	init_table(argv, &table, ph);
+	init_ph((int)table.num_ph, ph, &table);
+	launch_threads(&table, ph);
+	quit_app(&table, 0);
 	return (0);
 }

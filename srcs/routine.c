@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 07:49:17 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/19 12:13:00 by cefuente         ###   ########.fr       */
+/*   Updated: 2024/03/19 13:45:09 by cesar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void *routine(void *ph_struct)
 	wait_to_start(ph);
 	pthread_create(&ph->table->famine_threads[ph->index], NULL, &famine, (void *)ph);
 	if (ph->id % 2 == 0)
-		yousleep(ph, 0.1);
+		yousleep(ph, 1);
 	while (1)
 	{
 		if (thinks(ph, print_mut) == -1)
