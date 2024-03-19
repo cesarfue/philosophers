@@ -6,7 +6,7 @@
 /*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 17:40:23 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/19 17:05:30 by cefuente         ###   ########.fr       */
+/*   Updated: 2024/03/19 17:37:22 by cefuente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,21 @@ int	check_death(t_ph *ph)
 
 int	check_meals(t_ph *ph, pthread_mutex_t print_mut)
 {
+	struct timeval	current_time;
+	long			elapsed_time;
+
 	if (!ph->table->max_meals)
 		return (0);
 	if (ph->table->max_meals != 0 && ph->meals >= ph->table->max_meals)
 	{
-		print_death(ph, print_mut);
-		pthread_mutex_lock(&ph->table->famine_mut);
+		gettimeofday(&current_time, NULL);
+		elapsed_time = ((current_time.tv_sec - ph->table->start_time.tv_sec)
+				* 1000) + ((current_time.tv_usec
+					- ph->table->start_time.tv_usec)
+				/ 1000);
+		pthread_mutex_lock(&print_mut);
+		printf("%ld %ld ate enough\n", elapsed_time, ph->id);
+		pthread_mutex_unlock(&print_mut);
 		ph->table->famine = 1;
 		pthread_mutex_unlock(&ph->table->famine_mut);
 		return (-1);
