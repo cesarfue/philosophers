@@ -6,7 +6,7 @@
 /*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 14:05:10 by cefuente          #+#    #+#             */
-/*   Updated: 2024/03/19 12:20:03 by cefuente         ###   ########.fr       */
+/*   Updated: 2024/03/19 15:53:00 by cefuente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	atosi(const char *str, int *ret)
 		nb = nb * 10 + (str[i++] - '0');
 	}
 	nb *= x;
-	if (nb > INT_MAX || nb < INT_MIN)
+	if (nb > INT_MAX || nb < INT_MIN || nb == 0)
 		return (-1);
 	return (*ret = (int)nb);
 }
