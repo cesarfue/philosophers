@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:25:11 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/19 15:53:11 by cefuente         ###   ########.fr       */
+/*   Updated: 2024/03/19 16:10:34 by cesar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ int	main(int argc, char **argv)
 	t_table			table;
 	t_ph			**ph;
 
+	table.num_ph = 0;
 	if (argc < 5 || argc > 6)
 		return (quit_app(&table, 1), 1);
 	ph = NULL;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mem.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 10:22:32 by cesar             #+#    #+#             */
-/*   Updated: 2024/03/19 14:29:53 by cefuente         ###   ########.fr       */
+/*   Updated: 2024/03/19 16:06:16 by cesar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,19 +32,19 @@ int	malloc_ph(t_ph ***ph, size_t num_ph)
 
 void	*malloc_table(int num_ph, t_table *table)
 {
-	table->forks = NULL;
+	// table->forks = NULL;
 	table->forks = malloc(num_ph * sizeof(int));
 	if (!(table->forks))
 		return (NULL);
-	table->forks_mut = NULL;
+	// table->forks_mut = NULL;
 	table->forks_mut = malloc(num_ph * sizeof(pthread_mutex_t));
 	if (!(table->forks_mut))
 		return (NULL);
-	table->threads = NULL;
+	// table->threads = NULL;
 	table->threads = malloc(num_ph * sizeof(pthread_t));
 	if (!(table->threads))
 		return (NULL);
-	table->famine_threads = NULL;
+	// table->famine_threads = NULL;
 	table->famine_threads = malloc(num_ph * sizeof(pthread_t));
 	if (!(table->famine_threads))
 		return (NULL);
