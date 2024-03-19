@@ -6,7 +6,7 @@
 #    By: cefuente <cefuente@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/15 12:34:28 by cesar             #+#    #+#              #
-#    Updated: 2024/03/19 14:32:42 by cefuente         ###   ########.fr        #
+#    Updated: 2024/03/19 17:49:30 by cefuente         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,11 +26,11 @@ OBJS_DIR		=	objs/
 INCLUDES_DIR	=	includes/
 
 SRCS			=	$(addprefix $(SRCS_DIR),$(SRCS_LIST))
-OBJS			=	$(patsubst %.c, $(OBJS_DIR)%.o, $(SRCS))
+OBJS			=	$(patsubst $(SRCS_DIR)%.c, $(OBJS_DIR)%.o, $(SRCS))
 HEADER			=	$(INCLUDES_DIR)philosophers.h
 
 CC				=	cc
-FLAGS			=	-Wall -Wextra -Werror -Wuninitialized -g -lpthread -pthread
+FLAGS			=	-Wall -Wextra -Werror -g -lpthread -pthread
 RM				=	rm -rf
 
 all			:	$(NAME)
@@ -38,7 +38,7 @@ all			:	$(NAME)
 $(NAME)		:	$(OBJS)
 	$(CC) $(FLAGS) $(OBJS) -o $(NAME)
 
-$(OBJS_DIR)%.o	:	%.c $(HEADER)
+$(OBJS_DIR)%.o	:	$(SRCS_DIR)%.c $(HEADER)
 	mkdir -p $(dir $@)
 	$(CC) $(FLAGS) -I$(INCLUDES_DIR) -c $< -o $@
 
